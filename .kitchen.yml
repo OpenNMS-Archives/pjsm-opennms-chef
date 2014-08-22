@@ -1,0 +1,55 @@
+---
+driver:
+  name: vagrant
+  customize:
+    cpus: 2
+    memory: 2048
+  network:
+    - - forwarded_port
+      - guest: 8980
+        host: 8980
+        auto_correct: true
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: centos-6.5
+    driver:
+      box: opscode-centos-6.5
+      box_url: http://mirror.opennms.eu/pub/vagrant/stable/opscode_centos-6.5_chef-provisionerless.box
+    attributes:
+      opennms:
+        home: /opt/opennms
+
+suites:
+  - name: default
+    run_list:
+      - recipe[opennms-light::default]
+    attributes:
+      java:
+        install_flavor: oracle
+        jdk_version: 7
+        oracle_rpm:
+          type: jdk
+        oracle:
+          accept_oracle_download_terms: true
+      opennms:
+        release: branches/pjsm-2.0
+
+  - name: remote-poller
+    run_list:
+      - recipe[opennms-light::remote-poller]
+    attributes:
+      java:
+        install_flavor: oracle
+        jdk_version: 7
+        oracle_rpm:
+          type: jdk
+        oracle:
+          accept_oracle_download_terms: true
+      opennms:
+        release: branches/pjsm-2.0
+        home: /usr/share/opennms
+        location: Germany
+        baseurl: http://192.168.0.1:8980/opennms-remoting

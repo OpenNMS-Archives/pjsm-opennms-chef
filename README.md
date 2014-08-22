@@ -1,2 +1,0 @@
-pjsm-opennms-chef
-=================

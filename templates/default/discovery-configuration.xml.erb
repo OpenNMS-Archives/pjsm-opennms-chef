@@ -1,0 +1,9 @@
+<discovery-configuration threads="<%= node['opennms']['discovery']['threads'] %>" packets-per-second="<%= node['opennms']['discovery']['pps'] %>"
+	initial-sleep-time="<%= node['opennms']['discovery']['init_sleep_ms'] %>" restart-sleep-time="<%= node['opennms']['discovery']['restart_sleep_ms'] %>"
+	retries="<%= node['opennms']['discovery']['retries'] %>" timeout="<%= node['opennms']['discovery']['timeout'] %>">
+
+  <include-range foreign-source="<%= node['opennms']['discovery']['foreignsource'] %>">
+    <begin><%= node['opennms']['discovery']['range-start'] %></begin>
+    <end><%= node['opennms']['discovery']['range-end'] %></end>
+  </include-range>
+</discovery-configuration>
