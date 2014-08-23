@@ -109,7 +109,7 @@ end
 
 # Enable predefined set of OpenNMS services
 cookbook_file "service-configuration.xml" do
-  path "#{home_dir}/etc"
+  path "#{home_dir}/etc/service-configuration.xml"
   action :create
 end
 
