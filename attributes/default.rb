@@ -1,6 +1,8 @@
 # Java default settings
-default['java']['install_flavor'] = 'openjdk'
+default['java']['install_flavor'] = 'oracle'
 default['java']['jdk_version'] = '7'
+default['java']['oracle_rpm']['type'] = 'jdk'
+default['java']['oracle']['accept_oracle_download_terms'] = 'true'
 
 default['postgresql']['password']['postgres'] = 'opennms_pg'
 default['postgresql']['pg_hba'] = [
@@ -9,7 +11,7 @@ default['postgresql']['pg_hba'] = [
 ]
 
 # Set the OpenNMS release: stable, testing, unstable, snapshot
-default['opennms']['release'] = 'stable'
+default['opennms']['release'] = 'branches/pjsm-2.0'
 
 # TODO: Allow Java remote debugging on port 8001: true / false
 # I don't know how to configure the "service" correctly to restart opennms with -t and having
