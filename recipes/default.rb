@@ -107,6 +107,7 @@ end
 # Install OpenNMS database schema
 execute "Initialize OpenNMS database and libraries" do
   command "#{home_dir}/bin/install -dis"
+  not_if { ::File.exists?("#{home_dir}/etc/configured")}
   action :run
 end
 
@@ -123,10 +124,15 @@ end
 
 # Install Karaf ActiveMQ dispatcher configuration
 execute "Install OpenNMS activemq dispatcher" do
-  command "sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 features:install features:install opennms-activemq-dispatcher-config"
+  command 'sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 "features:install features:install opennms-activemq-dispatcher-config"'
 end
 
 # Install Karaf ActiveMQ event forwarder
-execute "Install OpenNMS activemq dispatcher" do
-  command "sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 features:install opennms-activemq-event-forwarder"
+execute "Install OpenNMS activemq event forwarder" do
+  command 'sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 "features:install opennms-activemq-event-forwarder"'
+end
+
+# Restart OpenNMS
+service "opennms" do
+  action [:restart]
 end
