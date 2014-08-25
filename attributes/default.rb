@@ -56,7 +56,7 @@ default['opennms']['storeByForeignSource'] = 'false'
 
 # Start service and Java environment
 default['opennms']['java_heap_space'] = '1024'
-default['opennms']['start_timeout'] = '120'
+default['opennms']['start_timeout'] = '0'
 
 # Jetty options
 default['opennms']['jetty']['port'] = '8980'
