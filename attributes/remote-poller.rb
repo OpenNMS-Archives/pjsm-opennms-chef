@@ -1,6 +1,3 @@
-# Set the OpenNMS release: stable, testing, unstable, snapshot
-default['opennms']['release'] = 'stable'
-
 # Allow Java remote debugging on port 8001: true / false
 default['opennms']['home'] = '/usr/share/opennms'
 default['opennms']['log'] = '/var/log/opennms/opennms-remote-poller.log'
