@@ -1,8 +1,8 @@
 = Cookbook for OpenNMS PJSM-2.0 branch
-This Chef cookbook installs OpenNMS from the public available package repositories.
-The installation is customized for a special feature branch called pjsm-2.0 which aims for special features regarding event forwarding to a central OpenNMS instance.
+This _Chef cookbook_ installs _OpenNMS_ from the public available package repositories.
+The installation is customized for a special feature branch called _pjsm-2.0_ which aims for special features regarding event forwarding to a central _OpenNMS_ instance.
 
-= Requirements and environments
+== Requirements and environments
 The cookbook is build based on the following requirements:
 
  * Internet access to download and run a provided CentOS 6.5 base image
@@ -11,6 +11,75 @@ The cookbook is build based on the following requirements:
  * Virtual
  * CentOS 6.5
  * Oracle Java 1.7
+
+WARNING: The setup is build just for _CentOS 6.5_ and is not tested on other platforms.
+
+== Dependencies
+
+ * `yum` for add and manage OpenNMS specific yum repository
+ * `java` allows add and manage different Java versions, OpenJDK and Oracle JDK
+ * `postgresql` allows to manage different PostgreSQL setups and configuration
+
+== Workflow of the recipe
+
+ * Install _OpenNMS_ _YUM_ repositories
+ * Installing packages:
+ ** Install _PostgreSQL_ database and set `postgres` password
+ ** Postgres is also configured to set 'pg_hba.conf' to allow `md5` authentication
+ ** `sshpass` to be able run Karaf `feature:install` commands
+ ** `jrrd` to allow configuration with 'RRDtool' instead of 'JRobin'
+ ** `opennms` as the main application
+ ** `Java` is installed after _OpenNMS_, because _OpenNMS_ installs OpenJDK 1.7 as dependency and overwrites custom Java environments.
+ ** Set Java environment for _OpenNMS_ with `runjava -s`
+ ** Install and configure _OpenNMS_ based on configuration templates from 'templates/default'
+ ** Initialize and configure the _OpenNMS_ database with `install -dis` and use '$OPENNMS_HOME/etc/configured' as a guard
+ ** Install a 'service-configuration.xml' to allow customized services for OpenNMS
+ ** Install `opennms` init script in runlevel and start
+ ** Try to connect to 'Karaf' and install `opennms-activemq-dispatcher-config`
+ ** Try to connect to 'Karaf' and install `opennms-activemq-event-forwarder`
+ ** Restart _OpenNMS_
+
+== Attributes
+The configuration of the following parts can be managed through attributes.
+The default settings are defined in 'attributes/default.rb'.
+
+ * _Java_ environment, default is set to latest Oracle JDK 1.7
+ * _PostgreSQL_, default set password for user postgres to `opennms_pg` and user `opennms` with password `opennms`, change authentication to `md5`, listen on localhost only on port `5432`.
+ * Configuration of the _OpenNMS YUM_ repository branch, default is set to `branches/pjsm-2.0`
+ * OpenNMS configuration RRD strategy is by default `JRobin`
+ * `storeByGroup` default is `false`
+ * `storeByForeignSource` default is `false`
+ * Java Heap Space is set to `1024`
+ * Start timeout is set to `0`
+
+=== Event forwarder specific attributes
+The cookbook is extended with configuration for OpenNMS Discovery and Event forwarder.
+
+.Attributes for configuration of OpenNMS Discovery daemon
+[options="header"]
+|===
+| Attribute                                             | Default value
+| `default['opennms']['discovery']['threads']`          | `1`
+| `default['opennms']['discovery']['pps']`              | `1`
+| `default['opennms']['discovery']['init_sleep_ms']`    | `900000`
+| `default['opennms']['discovery']['restart_sleep_ms']` | `86400000`
+| `default['opennms']['discovery']['retries']`          | `1`
+| `default['opennms']['discovery']['timeout']`          | `2000`
+| `default['opennms']['discovery']['foreignsource']`    | `UK-Store-1`
+| `default['opennms']['discovery']['range']['start']`   | `10.0.0.1`
+| `default['opennms']['discovery']['range']['end']`     | `10.255.255.254`
+|===
+
+.Attributes for dispatcher configuration
+[options="header"]
+|===
+| Attribute                                                      | Default value
+| `default['activemq']['server']['dispatcher']['broker_name']`   | `uk-store-dispatcher-01`
+| `default['activemq']['server']['dispatcher']['config']`        | `${karaf.base}/etc/activemq-dispatcher.xml`
+| `default['activemq']['server']['dispatcher']['brokerUri']`     | `tcp://192.168.1.10:61616`
+| `default['activemq']['server']['dispatcher']['data']`          | `${karaf.data}/activemq`
+| `default['opennms']['activemq']['eventforwarder']['location']` | `London`
+|===
 
 == Contributing
 
@@ -25,9 +94,4 @@ The cookbook is build based on the following requirements:
 
 Author:: Ronny Trommer <ronny@opennms.org>
 Copyright (c) 2014 The OpenNMS Group, Inc.
-License:: Apache License, Version 2.0
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+License:: GPLv3+
