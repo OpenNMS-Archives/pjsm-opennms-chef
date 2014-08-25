@@ -61,6 +61,13 @@ when "debian"
   end
 end
 
+# Install sshpass to allow connect to karaf to install features
+["sshpass"].each do |package_name|
+  package "#{package_name}" do
+    action :install
+  end
+end
+
 # Install OpenNMS and Java RRDtool library
 ["opennms", "jrrd"].each do |package_name|
   package "#{package_name}" do
@@ -86,7 +93,8 @@ end
   "discovery-configuration.xml" => "discovery-configuration.xml.erb",
   "org.apache.activemq.server-dispatcher.cfg" => "org.apache.activemq.server-dispatcher.cfg.erb",
   "org.opennms.features.activemq.eventforwarder.cfg" => "org.opennms.features.activemq.eventforwarder.cfg.erb",
-  "activemq-dispatcher.xml" => "activemq-dispatcher.xml.erb"
+  "activemq-dispatcher.xml" => "activemq-dispatcher.xml.erb",
+  "org.apache.karaf.shell.cfg" => "org.apache.karaf.shell.cfg.erb"
 }.each do |dest, source|
   template "#{home_dir}/etc/#{dest}" do
     source "#{source}"
@@ -111,4 +119,14 @@ end
 # Install opennms as service and set runlevel
 service "opennms" do
   action [:enable, :start]
+end
+
+# Install Karaf ActiveMQ dispatcher configuration
+execute "Install OpenNMS activemq dispatcher" do
+  command "sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 features:install features:install opennms-activemq-dispatcher-config"
+end
+
+# Install Karaf ActiveMQ event forwarder
+execute "Install OpenNMS activemq dispatcher" do
+  command "sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 features:install opennms-activemq-event-forwarder"
 end
