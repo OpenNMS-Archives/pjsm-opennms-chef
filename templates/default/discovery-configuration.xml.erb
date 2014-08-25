@@ -3,7 +3,7 @@
 	retries="<%= node['opennms']['discovery']['retries'] %>" timeout="<%= node['opennms']['discovery']['timeout'] %>">
 
   <include-range foreign-source="<%= node['opennms']['discovery']['foreignsource'] %>">
-    <begin><%= node['opennms']['discovery']['range-start'] %></begin>
-    <end><%= node['opennms']['discovery']['range-end'] %></end>
+    <begin><%= node['opennms']['discovery']['range']['start'] %></begin>
+    <end><%= node['opennms']['discovery']['range']['end'] %></end>
   </include-range>
 </discovery-configuration>

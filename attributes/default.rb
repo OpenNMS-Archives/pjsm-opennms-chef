@@ -146,5 +146,5 @@ default['opennms']['discovery']['timeout'] = 2000
 
 # Default discovery range
 default['opennms']['discovery']['foreignsource'] = 'UK-Store-1'
-default['opennms']['discovery']['range-start'] = '10.0.0.1'
-default['opennms']['discovery']['range-end'] = '10.255.255.254'
+default['opennms']['discovery']['range']['start'] = '10.0.0.1'
+default['opennms']['discovery']['range']['end'] = '10.255.255.254'
