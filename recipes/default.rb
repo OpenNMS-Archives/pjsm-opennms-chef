@@ -122,6 +122,10 @@ service "opennms" do
   action [:enable, :start]
 end
 
+######
+# IMPORTANT: If you set START_TIMEOUT = 0, Karaf is maybe unavailable for the following commands
+###
+
 # Install Karaf ActiveMQ dispatcher configuration
 execute "Install OpenNMS activemq dispatcher" do
   command 'sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 "features:install features:install opennms-activemq-dispatcher-config"'

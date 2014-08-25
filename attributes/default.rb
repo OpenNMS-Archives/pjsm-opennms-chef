@@ -56,7 +56,7 @@ default['opennms']['storeByForeignSource'] = 'false'
 
 # Start service and Java environment
 default['opennms']['java_heap_space'] = '1024'
-default['opennms']['start_timeout'] = '10'
+default['opennms']['start_timeout'] = '120'
 
 # Jetty options
 default['opennms']['jetty']['port'] = '8980'
@@ -152,6 +152,6 @@ default['opennms']['discovery']['range']['end'] = '10.255.255.254'
 # Default event forwarding configuration
 default['activemq']['server']['dispatcher']['broker_name'] = 'uk-store-dispatcher-01'
 default['activemq']['server']['dispatcher']['config'] = '${karaf.base}/etc/activemq-dispatcher.xml'
-default['activemq']['server']['dispatcher']['brokerUri'] = 'tcp://193.174.29.23:61616'
+default['activemq']['server']['dispatcher']['brokerUri'] = 'tcp://192.168.1.10:61616'
 default['activemq']['server']['dispatcher']['data'] = '${karaf.data}/activemq'
 default['opennms']['activemq']['eventforwarder']['location'] = 'London'
