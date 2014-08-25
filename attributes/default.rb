@@ -139,7 +139,7 @@ default['opennms']['datacollection']['reloadCheckInterval'] = '30000'
 # Global configuration for network discovery daemon
 default['opennms']['discovery']['threads'] = 1
 default['opennms']['discovery']['pps'] = 1
-default['opennms']['discovery']['init_sleep_ms'] = 30000
+default['opennms']['discovery']['init_sleep_ms'] = 900000
 default['opennms']['discovery']['restart_sleep_ms'] = 86400000
 default['opennms']['discovery']['retries'] = 1
 default['opennms']['discovery']['timeout'] = 2000
