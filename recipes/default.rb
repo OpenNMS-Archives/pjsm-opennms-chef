@@ -84,6 +84,9 @@ end
   "opennms-datasources.xml" => "opennms-datasources.xml.erb",
   "provisiond-configuration.xml" => "provisiond-configuration.xml.erb",
   "discovery-configuration.xml" => "discovery-configuration.xml.erb",
+  "org.apache.activemq.server-dispatcher.cfg" => "org.apache.activemq.server-dispatcher.cfg.erb",
+  "org.opennms.features.activemq.eventforwarder.cfg" => "org.opennms.features.activemq.eventforwarder.cfg.erb",
+  "activemq-dispatcher.xml" => "activemq-dispatcher.xml.erb"
 }.each do |dest, source|
   template "#{home_dir}/etc/#{dest}" do
     source "#{source}"

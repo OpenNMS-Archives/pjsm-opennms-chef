@@ -148,3 +148,10 @@ default['opennms']['discovery']['timeout'] = 2000
 default['opennms']['discovery']['foreignsource'] = 'UK-Store-1'
 default['opennms']['discovery']['range']['start'] = '10.0.0.1'
 default['opennms']['discovery']['range']['end'] = '10.255.255.254'
+
+# Default event forwarding configuration
+default['activemq']['server']['dispatcher']['broker_name'] = 'uk-store-dispatcher-01'
+default['activemq']['server']['dispatcher']['config'] = '${karaf.base}/etc/activemq-dispatcher.xml'
+default['activemq']['server']['dispatcher']['brokerUri'] = 'tcp://193.174.29.23:61616'
+default['activemq']['server']['dispatcher']['data'] = '${karaf.data}/activemq'
+default['opennms']['activemq']['eventforwarder']['location'] = 'London'

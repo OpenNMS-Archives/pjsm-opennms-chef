@@ -1,0 +1,9 @@
+# Needs to be globally unique
+broker-name = <%= node['activemq']['server']['dispatcher']['broker_name'] %>
+
+# Location of configuration file from opennms-activemq-dispatcher-config feature
+config <%= node['activemq']['server']['dispatcher']['config'] %>
+
+# Parameters used to replace values in the configuration file
+brokerUri = <%= node['activemq']['server']['dispatcher']['brokerUri'] %>
+data <%= node['activemq']['server']['dispatcher']['data'] %>
