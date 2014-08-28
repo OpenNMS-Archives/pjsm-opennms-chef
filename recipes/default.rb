@@ -90,11 +90,7 @@ end
   "rrd-configuration.properties" => "rrd-configuration.properties.erb",
   "opennms-datasources.xml" => "opennms-datasources.xml.erb",
   "provisiond-configuration.xml" => "provisiond-configuration.xml.erb",
-  "discovery-configuration.xml" => "discovery-configuration.xml.erb",
-  "org.apache.activemq.server-dispatcher.cfg" => "org.apache.activemq.server-dispatcher.cfg.erb",
-  "org.opennms.features.activemq.eventforwarder.cfg" => "org.opennms.features.activemq.eventforwarder.cfg.erb",
-  "activemq-dispatcher.xml" => "activemq-dispatcher.xml.erb",
-  "org.apache.karaf.shell.cfg" => "org.apache.karaf.shell.cfg.erb"
+  "discovery-configuration.xml" => "discovery-configuration.xml.erb"
 }.each do |dest, source|
   template "#{home_dir}/etc/#{dest}" do
     source "#{source}"
@@ -122,21 +118,4 @@ service "opennms" do
   action [:enable, :start]
 end
 
-# Install Karaf ActiveMQ dispatcher configuration, try 120 seconds to get a Karaf connection
-execute "Install OpenNMS activemq dispatcher" do
-  command 'sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 "features:install features:install opennms-activemq-dispatcher-config"'
-  retries 60
-  retry_delay 2
-end
-
-# Install Karaf ActiveMQ event forwarder, try 120 seconds to get a Karaf connection
-execute "Install OpenNMS activemq event forwarder" do
-  command 'sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 "features:install opennms-activemq-event-forwarder"'
-  retries 60
-  retry_delay 2
-end
-
-# Restart OpenNMS
-service "opennms" do
-  action [:restart]
-end
+#Moved karaf commands to event forwarder recipe and event receiver recipe

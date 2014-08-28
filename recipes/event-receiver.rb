@@ -9,7 +9,7 @@
 include_recipe "opennms-light"
 
 # Install Karaf ActiveMQ dispatcher configuration, try 120 seconds to get a Karaf connection
-execute "Install OpenNMS activemq dispatcher" do
+execute "Install OpenNMS activemq" do
   command 'sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 "features:install opennms-activemq"'
   retries 60
   retry_delay 2

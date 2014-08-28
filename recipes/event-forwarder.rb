@@ -17,6 +17,21 @@ when "debian"
     home_dir = "/usr/share/opennms"
 end
 
+{ 
+  "org.apache.activemq.server-dispatcher.cfg" => "org.apache.activemq.server-dispatcher.cfg.erb",
+  "org.opennms.features.activemq.eventforwarder.cfg" => "org.opennms.features.activemq.eventforwarder.cfg.erb",
+  "activemq-dispatcher.xml" => "activemq-dispatcher.xml.erb",
+  "org.apache.karaf.shell.cfg" => "org.apache.karaf.shell.cfg.erb"
+}.each do |dest, source|
+  template "#{home_dir}/etc/#{dest}" do
+    source "#{source}"
+    owner "root"
+    group "root"
+    mode "0640"
+  end
+end
+
+
 { "reqPush.sh" => "reqPush.sh.erb"}.each do |dest, source|
   template "#{home_dir}/bin/#{dest}" do
     source "#{source}"
@@ -30,4 +45,23 @@ cron_d "reqPush_cron" do
   action :create
   minute "0/5"
   command "#{home_dir}/bin/reqPush.sh"
+end
+
+# Install Karaf ActiveMQ dispatcher configuration, try 120 seconds to get a Karaf connection
+execute "Install OpenNMS activemq dispatcher" do
+  command 'sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 "features:install features:install opennms-activemq-dispatcher-config"'
+  retries 60
+  retry_delay 2
+end
+
+# Install Karaf ActiveMQ event forwarder, try 120 seconds to get a Karaf connection
+execute "Install OpenNMS activemq event forwarder" do
+  command 'sshpass -p admin ssh -o StrictHostKeyChecking=no admin@localhost -p 8101 "features:install opennms-activemq-event-forwarder"'
+  retries 60
+  retry_delay 2
+end
+
+# Restart OpenNMS
+service "opennms" do
+  action [:restart]
 end
