@@ -1,0 +1,21 @@
+#!/bin/sh
+
+REST_USER="<%= node['opennms']['reqPush']['restUser'] %>"
+REST_PASSWD="<%= node['opennms']['reqPush']['restPasswd'] %>"
+OPENNMS_HOME="<%= node['opennms']['home'] %>"
+BASE_URL="<%= node['opennms']['reqPush']['baseUrl'] %>"
+FOREIGN_SOURCE="<%= node['opennms']['discovery']['foreignsource'] %>"
+FILE="${OPENNMS_HOME}/etc/imports/${FOREIGN_SOURCE}.xml"
+TOUCH_FILE="${OPENNMS_HOME}/share/reqPush/${FOREIGN_SOURCE}.xml"
+
+mkdir -p ${OPENNMS_HOME}/share/reqPush
+
+if [ ! -e ${TOUCH_FILE} -o ${FILE} -nt ${TOUCH_FILE} ];
+then
+    touch ${TOUCH_FILE}
+
+    curl --user ${REST_USER}:${REST_PASSWD} -sSf -d "@${FILE}" -X POST -H 'Content-type: application/xml' ${BASE_URL}/opennms/rest/requisitions -o /dev/null
+
+    curl --user ${REST_USER}:${REST_PASSWD} -sSf -X PUT "${BASE_URL}/opennms/rest/requisitions/${FOREIGN_SOURCE}/import?rescanExisting=false"
+
+fi;
