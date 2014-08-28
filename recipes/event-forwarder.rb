@@ -12,11 +12,9 @@ include_recipe "opennms-light"
 case node['platform_family']
 when "rhel"
     home_dir = "/opt/opennms"
-end
 
 when "debian"
     home_dir = "/usr/share/opennms"
-end
 end
 
 { "reqPush.sh" => "reqPush.sh.erb"}.each do |dest, source|
