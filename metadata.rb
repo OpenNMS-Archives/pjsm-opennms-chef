@@ -13,6 +13,7 @@ recipe 'opennms-light', 'Installs open source enterprise network management plat
 depends 'yum'
 depends 'java'
 depends 'postgresql'
+depends 'cron'
 
 %w(ubuntu debian redhat centos fedora).each do |os|
   supports os
