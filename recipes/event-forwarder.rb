@@ -22,7 +22,7 @@ end
   "org.opennms.features.activemq.eventforwarder.cfg" => "org.opennms.features.activemq.eventforwarder.cfg.erb",
   "activemq-dispatcher.xml" => "activemq-dispatcher.xml.erb",
   "org.apache.karaf.shell.cfg" => "org.apache.karaf.shell.cfg.erb",
-  "org.apache.karaf.features.cfg" => "org.apache.karaf.features.cfg.erg"
+  "org.apache.karaf.features.cfg" => "org.apache.karaf.features.cfg.erb"
 }.each do |dest, source|
   template "#{home_dir}/etc/#{dest}" do
     source "#{source}"
